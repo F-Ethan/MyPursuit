@@ -1,0 +1,7 @@
+{
+  "name": "MyPursuit",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
