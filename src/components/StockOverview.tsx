@@ -4,80 +4,63 @@ import { useState } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonItem, IonLabel, IonBadge, IonList, IonText, IonAvatar, IonThumbnail, IonButton, IonIcon, IonDatetime, IonSelect, IonSelectOption, IonToggle, IonInput, IonCheckbox, IonRange, IonNote } from '@ionic/react';
 import { closeCircle, home, star, navigate, informationCircle, checkmarkCircle, shuffle, thumbsUpOutline, arrowUp, arrowDown,  } from 'ionicons/icons';
 
-
-
-interface listItems {
-  Symbol: string;
-  Marketcap: string;
-  Action: String;
-  Color: String,
-
-}
-
 interface Props {
-    Stock: string;
+    stock: {
+      symbol: string;
+      marketOpen: number;
+      marketClose: number;
+      sharesShort: number;
+      totalCash: number;
+      marketCap: number;
+      revenue: number;
+      dividendsPerShare: number;
+    };
     i: number;
 }
 
 let Actions: Array<string> = ['Buy', 'Sell', 'Hold'];
 
 
-const StockOverview: React.FC<Props> = ({Stock, i}) => {
+const StockOverview: React.FC<Props> = ({stock, i}) => {
 
-    const [ listItems, setListItems ] = useState<any>([]);
+// nFormatter is a funcion used to take a large Number(num) and a digits variable. the 
+// digits variable (0 or 1) decieds if you want a decimal piont or not
+  function nFormatter(num: number, digits: number) {
+    const lookup = [  
+      { value: 1, symbol: "" },
+      { value: 1e3, symbol: "k" },
+      { value: 1e6, symbol: "M" },
+      { value: 1e9, symbol: "B" },
+      { value: 1e12, symbol: "T" },
+      { value: 1e15, symbol: "P" },
+      { value: 1e18, symbol: "E" }
+    ];
+    const rx = /\.0+$|(\.[0-9]*[1-9])0+$/;
+    var item = lookup.slice().reverse().find(function(item) {
+      return num >= item.value;
+    });
+    return item ? (num / item.value).toFixed(digits).replace(rx, "$1") + item.symbol : "0";
+  }
 
-
-
-      React.useEffect(() => {
-      sendRequest().then((data: any) => {
-              setListItems(data)
-      });
-      }, []);
-
-      // Yahoo finace API 
-      // var options = {
-      //   method: 'GET',
-      //   url: 'https://yh-finance.p.rapidapi.com/stock/v2/get-summary',
-      //   params: {symbol: Stock, region: 'US'},
-      //   headers: {
-      //     'x-rapidapi-host': 'yh-finance.p.rapidapi.com',
-      //     'x-rapidapi-key': '63a51f3279msh18e8edbbf2f8ab4p136b71jsnb9c98ca45e18'
-      //   }
-      // };
-
-      var options = {
-        method: 'GET',
-        url: 'http://localhost:3000/',
-        params: {symbol: Stock},
-       
-      };
+  // change the large numbers form the stock data into understanable numbers, eg 126B 
+  let formattedMarketCap = nFormatter(stock.marketCap, 0)
+  let formattedRevenue = nFormatter(stock.revenue, 0)
 
 
-      const sendRequest = () => {
-      console.log("Sending Get request")
-      return axios.request(options).then((response: any) => {
-      return response.data[0];
-      })
-      };
-
-
-    var axios = require("axios").default;
-
-    console.log(Stock, listItems);
-
-  return (
+    return (
  
         
-       <div className='row'> 
-        <IonItem key={i}>
-          <IonBadge color={listItems.Color}>
-            {listItems.Action}
+       <div className='row' key={stock.symbol} > 
+        <IonItem >
+          {/* <IonBadge color={stock.Color}> */}
+          <IonBadge>
+            {formattedRevenue}
           </IonBadge>
           {/* <ion-icon name="thumbs-up-sharp"></ion-icon> */}
-          <IonIcon icon={arrowUp} />
-          <IonLabel > {listItems.Symbol} </IonLabel>
+          {/* <IonIcon icon={arrowUp} /> */}
+          <IonLabel class="ion-margin-start"> {stock.symbol} </IonLabel>
           <IonItem slot="end">
-          ${listItems.Marketcap}
+          ${formattedMarketCap}
           </IonItem>
         </IonItem>
       </div>

@@ -6,9 +6,6 @@ interface ContainerProps {
   name: string;
 }
 
-// , 'ARKK', 'LMND', 'FUV', "FL","ETH-USD", "DJI", "GSPC", "CARG", "IXIC", "RH", "CLF", "ISPO", "ABBV", "XRP-USD", "SE", "CM.TO", "REGI", "X", "ALF", "JNJ", "ZOM", "BTE.TO", "MULN", "FCX", "NUE", "CYDY", "XRP-CAD", "NKE", "TAL", "LMT", "WTRH"
-let StockInfo: Array<string> = ['TSLA'];
-
 
 const ExploreContainer: React.FC<ContainerProps> = ({ name }) => {
      return(
