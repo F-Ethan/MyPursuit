@@ -1,35 +1,14 @@
 import { useState, useEffect } from "react";
 import {
   IonContent,
-  IonHeader,
   IonPage,
-  IonTitle,
-  IonToolbar,
+  IonList,
+  IonItemDivider,
+  IonLabel,
 } from "@ionic/react";
-import ExploreContainer from "../components/ExploreContainer";
 import StockOverview from "../components/StockOverview";
 
 import "./Tab2.css";
-
-// let stockObject = {
-//   StockData: {
-//     symbol: stockData.symbol,
-//     marketOpen: stockData.regularMarketOpen,
-//     marketClose: stockData.regularMarketPreviousClose,
-//     sharesShort: stockData.sharesShort,
-//     totalCash: stockData.totalCash,
-//     marketCap: stockData.marketCap,
-//     revenue: stockData.revenue,
-//     dividendsPerShare: stockData.dividendsPerShare,
-//   },
-//   userStockData: {
-//     symbol: userStockData[0].symbol,
-//     toHighPrice: userStockData[0].toHighPrice,
-//     highPrice: userStockData[0].highPrice,
-//     lowPrice: userStockData[0].lowPrice,
-//     toLowPrice: userStockData[0].toLowPrice,
-//   },
-// };
 
 interface listItems {
   StockData: {
@@ -56,11 +35,6 @@ interface stockInfo extends Array<listItems> {}
 interface ContainerProps {
   name: string;
 }
-
-// let StockInfo: Array<string> = ['TSLA'
-// , 'ARKK', 'LMND', 'FUV', "FL","ETH-USD", "DJI", "GSPC", "CARG", "IXIC", "RH", "CLF", "ISPO", "ABBV", "XRP-USD", "SE", "CM.TO", "REGI", "X", "ALF", "JNJ", "ZOM", "BTE.TO", "MULN", "FCX", "NUE", "CYDY", "XRP-CAD", "NKE", "TAL", "LMT", "WTRH"
-// ];
-// let Stockssssss: Array<string> = ["TSLA", 'AMD', "FUV"]
 
 const Tab2: React.FC = () => {
   const [stockInfo, setstockInfo] = useState<any>([]);
@@ -100,24 +74,21 @@ const Tab2: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Overview</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Overview</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent>
+      <IonContent>
+        <IonItemDivider>
+          <IonLabel>Actions</IonLabel>
+          <IonLabel class="ion-margin-start">Symbol</IonLabel>
+          <IonLabel slot="end" class="ion-margin-end">
+            Market Cap
+          </IonLabel>
+        </IonItemDivider>
+        <IonList>
           {/*-- Default Item --*/}
 
           {stockInfo.map((stock: any, i: number) => {
             return <StockOverview stock={stock} i={i} />;
           })}
-        </IonContent>
+        </IonList>
       </IonContent>
     </IonPage>
   );

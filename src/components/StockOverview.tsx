@@ -1,5 +1,5 @@
 import React from "react";
-import { IonItem, IonLabel, IonBadge } from "@ionic/react";
+import { IonItem, IonLabel, IonBadge, IonItemDivider } from "@ionic/react";
 import { shuffle, thumbsUpOutline, arrowUp, arrowDown } from "ionicons/icons";
 
 interface Props {
@@ -52,17 +52,41 @@ const StockOverview: React.FC<Props> = ({ stock, i }) => {
       : "0";
   }
 
+  // Deconstruct items for easy uses
+  let marketCap = stock.StockData.marketCap;
+  let marketOpen = stock.StockData.marketOpen;
+  let revenue = stock.StockData.revenue;
+  let toHighPrice = stock.userStockData.toHighPrice;
+  let highPrice = stock.userStockData.highPrice;
+  let lowPrice = stock.userStockData.lowPrice;
+  let toLowPrice = stock.userStockData.toLowPrice;
+  let action = "";
+
   // change the large numbers form the stock data into understanable numbers, eg 126B
-  let formattedMarketCap = nFormatter(stock.StockData.marketCap, 0);
-  let formattedRevenue = nFormatter(stock.StockData.revenue, 0);
+  let formattedMarketCap = nFormatter(marketCap, 0);
+  let formattedRevenue = nFormatter(revenue, 0);
+  if (marketOpen >= toHighPrice) {
+    action = "danger";
+  } else if (marketOpen >= highPrice) {
+    action = "warning";
+  } else if (marketOpen >= lowPrice) {
+    action = "success";
+  } else if (marketOpen >= toLowPrice) {
+    action = "secondary";
+  } else {
+    action = "";
+  }
 
   return (
     <div className="row" key={stock.StockData.symbol}>
       <IonItem>
+        <IonItem color={action}></IonItem>
+
         {/* <IonBadge color={stock.Color}> */}
-        <IonBadge>{formattedRevenue}</IonBadge>
+        {/* <IonBadge>{formattedRevenue}</IonBadge> */}
         {/* <ion-icon name="thumbs-up-sharp"></ion-icon> */}
         {/* <IonIcon icon={arrowUp} /> */}
+
         <IonLabel class="ion-margin-start"> {stock.StockData.symbol} </IonLabel>
         <IonItem slot="end">${formattedMarketCap}</IonItem>
       </IonItem>
