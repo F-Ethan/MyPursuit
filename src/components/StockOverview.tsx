@@ -4,7 +4,7 @@ import { shuffle, thumbsUpOutline, arrowUp, arrowDown } from "ionicons/icons";
 
 interface Props {
   stock: {
-    StockData: {
+    stockData: {
       symbol: string;
       marketOpen: number;
       marketClose: number;
@@ -53,9 +53,9 @@ const StockOverview: React.FC<Props> = ({ stock, i }) => {
   }
 
   // Deconstruct items for easy uses
-  let marketCap = stock.StockData.marketCap;
-  let marketOpen = stock.StockData.marketOpen;
-  let revenue = stock.StockData.revenue;
+  let marketCap = stock.stockData.marketCap;
+  let marketOpen = stock.stockData.marketOpen;
+  let revenue = stock.stockData.revenue;
   let toHighPrice = stock.userStockData.toHighPrice;
   let highPrice = stock.userStockData.highPrice;
   let lowPrice = stock.userStockData.lowPrice;
@@ -78,7 +78,7 @@ const StockOverview: React.FC<Props> = ({ stock, i }) => {
   }
 
   return (
-    <div className="row" key={stock.StockData.symbol}>
+    <div className="row" key={stock.stockData.symbol}>
       <IonItem>
         <IonItem color={action}></IonItem>
 
@@ -87,7 +87,7 @@ const StockOverview: React.FC<Props> = ({ stock, i }) => {
         {/* <ion-icon name="thumbs-up-sharp"></ion-icon> */}
         {/* <IonIcon icon={arrowUp} /> */}
 
-        <IonLabel class="ion-margin-start"> {stock.StockData.symbol} </IonLabel>
+        <IonLabel class="ion-margin-start"> {stock.stockData.symbol} </IonLabel>
         <IonItem slot="end">${formattedMarketCap}</IonItem>
       </IonItem>
     </div>
