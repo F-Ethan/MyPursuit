@@ -5,10 +5,16 @@ import {
   IonList,
   IonItemDivider,
   IonLabel,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButton,
+  useIonModal,
 } from "@ionic/react";
 import StockOverview from "../components/StockOverview";
+import NewStock from "./NewStock";
 
-import "./Tab2.css";
+import "./MyStocks.css";
 
 interface listItems {
   StockData: {
@@ -36,9 +42,25 @@ interface ContainerProps {
   name: string;
 }
 
-const Tab2: React.FC = () => {
+const MyStocks: React.FC = () => {
+  // variables to set and store listItems object returned from the server
   const [stockInfo, setstockInfo] = useState<any>([]);
 
+  // opens and closes the NewStock Modal
+  const [present, dismiss] = useIonModal(NewStock, {
+    dismiss: () => dismiss(),
+  });
+
+  //New Stock Modal options
+  const modalOptions = {
+    onDidDismiss: () => dismiss(),
+    breakpoints: [0, 0.2, 0.5, 1],
+    initialBreakpoint: 0.5,
+    backdropBreakpoint: 0.2,
+    swipeToClose: true,
+  };
+
+  // when DOM is updated useEffect sends request to server to get stock data
   useEffect(() => {
     sendRequest().then((data: any) => {
       setstockInfo(data);
@@ -56,6 +78,7 @@ const Tab2: React.FC = () => {
   //   }
   // };
 
+  // the variables sent to the server to get the stock data
   var options = {
     method: "GET",
     url: "http://localhost:3000/",
@@ -75,6 +98,20 @@ const Tab2: React.FC = () => {
   return (
     <IonPage>
       <IonContent>
+        <IonHeader>
+          <IonToolbar>
+            <IonTitle slot="start">My Stocks</IonTitle>
+            <IonButton
+              slot="end"
+              class="ion-margin-end"
+              color="success"
+              fill="outline"
+              onClick={() => present(modalOptions)}
+            >
+              +
+            </IonButton>
+          </IonToolbar>
+        </IonHeader>
         <IonItemDivider>
           <IonLabel>Actions</IonLabel>
           <IonLabel class="ion-margin-start">Symbol</IonLabel>
@@ -94,4 +131,4 @@ const Tab2: React.FC = () => {
   );
 };
 
-export default Tab2;
+export default MyStocks;
