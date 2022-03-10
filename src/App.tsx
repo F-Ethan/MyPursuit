@@ -17,7 +17,6 @@ import {
 } from "ionicons/icons";
 import Home from "./pages/Home";
 import MyStocks from "./pages/MyStocks";
-import NewStock from "./pages/NewStock";
 import Tab3 from "./pages/Tab3";
 
 /* Core CSS required for Ionic components to work properly */
