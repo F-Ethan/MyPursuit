@@ -13,6 +13,9 @@ import {
 } from "@ionic/react";
 import "./NewStock.css";
 
+import { connect } from "react-redux";
+import { toggleNewStockForm } from "../data/actions/uiel";
+
 import { listItems } from "../interfaces/stockData";
 
 interface Props {
@@ -21,7 +24,7 @@ interface Props {
 
 interface stockInfo extends Array<listItems> {}
 
-const NewStock: React.FC<Props> = ({ dismiss }) => {
+const NewStock: React.FC<Props> = (props: any) => {
   const [text, setText] = useState<string>();
   const [newStockInfo, setNewStockInfo] = useState<any>([]);
   const [stockSelect, setStockSelect] = useState<boolean>(false);
@@ -59,7 +62,11 @@ const NewStock: React.FC<Props> = ({ dismiss }) => {
     return (
       <IonPage>
         <IonContent>
-          <IonButton onClick={() => dismiss}>X</IonButton>
+          <IonButton
+            onClick={() => props.dispatch({ toggleNewStockForm: false })}
+          >
+            X
+          </IonButton>
           <IonCard>
             <IonCardHeader>
               <IonCardTitle>New Stock</IonCardTitle>
@@ -125,4 +132,7 @@ const NewStock: React.FC<Props> = ({ dismiss }) => {
   }
 };
 
-export default NewStock;
+// export default NewStock;
+export default connect((props: any) => ({
+  isVisable: props.uiel.loader.isVisable,
+}))(NewStock);

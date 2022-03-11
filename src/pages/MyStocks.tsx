@@ -13,6 +13,9 @@ import {
 } from "@ionic/react";
 import StockOverview from "../components/StockOverview";
 import NewStock from "./NewStock";
+import { connect } from "react-redux";
+
+import { setLoader, toggleNewStockForm } from "../data/actions/uiel";
 
 import "./MyStocks.css";
 
@@ -20,13 +23,13 @@ import { listItems } from "../interfaces/stockData";
 
 interface stockInfo extends Array<listItems> {}
 
-const MyStocks: React.FC = () => {
+const MyStocks: React.FC = (props: any) => {
   // variables to set and store listItems object returned from the server
   const [stockInfo, setstockInfo] = useState<any>([]);
 
   // opens and closes the NewStock Modal
   const [present, dismiss] = useIonModal(NewStock, {
-    dismiss: () => dismiss(),
+    dismiss: () => props.dispatch({ toggleNewStockForm: false }),
   });
 
   //New Stock Modal options
@@ -41,6 +44,8 @@ const MyStocks: React.FC = () => {
 
   // when DOM is updated useEffect sends request to server to get stock data
   useEffect(() => {
+    // setTimeout(() => props.dispatch(setLoader({ isLoading: true })), 2000);
+
     sendRequest().then((data: any) => {
       setstockInfo(data);
     });
@@ -65,38 +70,48 @@ const MyStocks: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent>
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle slot="start">My Stocks</IonTitle>
-            <IonButton
-              slot="end"
-              class="ion-margin-end"
-              color="success"
-              fill="outline"
-              onClick={() => present(modalOptions)}
-            >
-              +
-            </IonButton>
-          </IonToolbar>
-        </IonHeader>
-        <IonItemDivider>
-          <IonLabel>Actions</IonLabel>
-          <IonLabel class="ion-margin-start">Symbol</IonLabel>
-          <IonLabel slot="end" class="ion-margin-end">
-            Market Cap
-          </IonLabel>
-        </IonItemDivider>
-        <IonList>
-          {/*-- Default Item --*/}
+      {props.isLoading ? (
+        <div>
+          <p>The page is loading... Please wait.</p>
+        </div>
+      ) : (
+        <IonContent>
+          <IonHeader>
+            <IonToolbar>
+              <IonTitle slot="start">My Stocks</IonTitle>
+              <IonButton
+                slot="end"
+                class="ion-margin-end"
+                color="success"
+                fill="outline"
+                onClick={() => present(modalOptions)}
+              >
+                +
+              </IonButton>
+            </IonToolbar>
+          </IonHeader>
+          <IonItemDivider>
+            <IonLabel>Actions</IonLabel>
+            <IonLabel class="ion-margin-start">Symbol</IonLabel>
+            <IonLabel slot="end" class="ion-margin-end">
+              Market Cap
+            </IonLabel>
+          </IonItemDivider>
+          <IonList>
+            {/*-- Default Item --*/}
 
-          {stockInfo.map((stock: any, i: number) => {
-            return <StockOverview stock={stock} i={i} />;
-          })}
-        </IonList>
-      </IonContent>
+            {stockInfo.map((stock: any, i: number) => {
+              return <StockOverview stock={stock} i={i} />;
+            })}
+          </IonList>
+        </IonContent>
+      )}
     </IonPage>
   );
 };
 
-export default MyStocks;
+// export default MyStocks;
+export default connect((props: any) => ({
+  isLoading: props.uiel.loader.isLoading,
+  isVisable: props.uiel.loader.isVisable,
+}))(MyStocks);
