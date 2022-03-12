@@ -16,13 +16,13 @@ import "./NewStock.css";
 import { connect } from "react-redux";
 import { toggleNewStockForm } from "../data/actions/uiel";
 
-import { listItems } from "../interfaces/stockData";
+import { rawStockData } from "../interfaces/stockData";
 
 interface Props {
   dismiss: string;
 }
 
-interface stockInfo extends Array<listItems> {}
+interface stockInfo extends Array<rawStockData> {}
 
 const NewStock: React.FC<Props> = (props: any) => {
   const [text, setText] = useState<string>();

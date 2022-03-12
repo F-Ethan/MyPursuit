@@ -78,19 +78,17 @@ const StockOverview: React.FC<Props> = ({ stock, i }) => {
   }
 
   return (
-    <div className="row" key={stock.stockData.symbol}>
-      <IonItem>
-        <IonItem color={action}></IonItem>
+    <IonItem>
+      <IonItem color={action}></IonItem>
 
-        {/* <IonBadge color={stock.Color}> */}
-        {/* <IonBadge>{formattedRevenue}</IonBadge> */}
-        {/* <ion-icon name="thumbs-up-sharp"></ion-icon> */}
-        {/* <IonIcon icon={arrowUp} /> */}
+      {/* <IonBadge color={stock.Color}> */}
+      {/* <IonBadge>{formattedRevenue}</IonBadge> */}
+      {/* <ion-icon name="thumbs-up-sharp"></ion-icon> */}
+      {/* <IonIcon icon={arrowUp} /> */}
 
-        <IonLabel class="ion-margin-start"> {stock.stockData.symbol} </IonLabel>
-        <IonItem slot="end">${formattedMarketCap}</IonItem>
-      </IonItem>
-    </div>
+      <IonLabel class="ion-margin-start"> {stock.stockData.symbol} </IonLabel>
+      <IonItem slot="end">${formattedMarketCap}</IonItem>
+    </IonItem>
   );
 };
 

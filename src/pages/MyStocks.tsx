@@ -4,6 +4,7 @@ import {
   IonPage,
   IonList,
   IonItemDivider,
+  IonItem,
   IonLabel,
   IonHeader,
   IonToolbar,
@@ -19,12 +20,12 @@ import { setLoader, toggleNewStockForm } from "../data/actions/uiel";
 
 import "./MyStocks.css";
 
-import { listItems } from "../interfaces/stockData";
+import { rawStockData } from "../interfaces/stockData";
 
-interface stockInfo extends Array<listItems> {}
+interface stockInfo extends Array<rawStockData> {}
 
 const MyStocks: React.FC = (props: any) => {
-  // variables to set and store listItems object returned from the server
+  // variables to set and store rawStockData object returned from the server
   const [stockInfo, setstockInfo] = useState<any>([]);
 
   // opens and closes the NewStock Modal
@@ -101,7 +102,11 @@ const MyStocks: React.FC = (props: any) => {
             {/*-- Default Item --*/}
 
             {stockInfo.map((stock: any, i: number) => {
-              return <StockOverview stock={stock} i={i} />;
+              return (
+                <span key={i}>
+                  <StockOverview stock={stock} i={i} />
+                </span>
+              );
             })}
           </IonList>
         </IonContent>

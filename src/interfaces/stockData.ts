@@ -1,4 +1,4 @@
-export interface listItems {
+export interface rawStockData {
   StockData: {
     symbol: string;
     marketOpen: number;
