@@ -17,16 +17,21 @@ import NewStock from "./NewStock";
 import { connect } from "react-redux";
 
 import { setLoader, toggleNewStockForm } from "../data/actions/uiel";
+import { setStockData } from "../data/actions/stockData";
 
 import "./MyStocks.css";
 
 import { rawStockData } from "../interfaces/stockData";
+import store from "../data/store";
 
 interface stockInfo extends Array<rawStockData> {}
 
 const MyStocks: React.FC = (props: any) => {
   // variables to set and store rawStockData object returned from the server
-  const [stockInfo, setstockInfo] = useState<any>([]);
+  const [stockInfo, setStockInfo] = useState<any>([]);
+  // store.subscribe(() => {
+  //   setStockInfo(props.getState().rawStockData);
+  // });
 
   // opens and closes the NewStock Modal
   const [present, dismiss] = useIonModal(NewStock, {
@@ -47,8 +52,20 @@ const MyStocks: React.FC = (props: any) => {
   useEffect(() => {
     // setTimeout(() => props.dispatch(setLoader({ isLoading: true })), 2000);
 
-    sendRequest().then((data: any) => {
-      setstockInfo(data);
+    sendRequest().then(async (data: any) => {
+      // setStockInfo(data);
+      console.log("Dispatching stock data");
+      console.log(data);
+      props.dispatch(setStockData({ ...data }));
+      // await data.forEach((item: any) => {
+      //   console.log("maping itmes to store");
+
+      //   props.dispatch(setStockData({...item}));
+      // }).then(props.dispatch(setLoader(false)))
+      // data.map((item: any, i: number) => {
+      //   console.log("maping itmes to store")
+      //   props.dispatch(setStockData(item));
+      // });
     });
   }, []);
 
@@ -67,7 +84,7 @@ const MyStocks: React.FC = (props: any) => {
   };
 
   var axios = require("axios").default;
-  console.log(stockInfo);
+  console.log(props.stockData);
 
   return (
     <IonPage>
@@ -100,14 +117,24 @@ const MyStocks: React.FC = (props: any) => {
           </IonItemDivider>
           <IonList>
             {/*-- Default Item --*/}
-
-            {stockInfo.map((stock: any, i: number) => {
-              return (
-                <span key={i}>
-                  <StockOverview stock={stock} i={i} />
-                </span>
-              );
-            })}
+            {
+              props.stockData.map((stock: any, i: number) => {
+                // console.log(arr);
+                // if (arr.length < 1) {
+                //   console.log(arr);
+                // } else {
+                //   arr.map((stock: any, i: number) => {
+                console.log("sending Stock to StockOverview");
+                console.log(stock);
+                return (
+                  <span key={i}>
+                    <StockOverview stockInfo={stock} i={i} />
+                  </span>
+                );
+              })
+              // }
+            }
+            )
           </IonList>
         </IonContent>
       )}
@@ -119,4 +146,5 @@ const MyStocks: React.FC = (props: any) => {
 export default connect((props: any) => ({
   isLoading: props.uiel.loader.isLoading,
   isVisable: props.uiel.loader.isVisable,
+  stockData: props.stockData.rawStockData,
 }))(MyStocks);

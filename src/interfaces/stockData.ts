@@ -1,5 +1,5 @@
 export interface rawStockData {
-  StockData: {
+  stockData: {
     symbol: string;
     marketOpen: number;
     marketClose: number;

@@ -3,7 +3,7 @@ import { IonItem, IonLabel, IonBadge, IonItemDivider } from "@ionic/react";
 import { shuffle, thumbsUpOutline, arrowUp, arrowDown } from "ionicons/icons";
 
 interface Props {
-  stock: {
+  stockInfo: {
     stockData: {
       symbol: string;
       marketOpen: number;
@@ -27,7 +27,7 @@ interface Props {
 
 let Actions: Array<string> = ["Buy", "Sell", "Hold"];
 
-const StockOverview: React.FC<Props> = ({ stock, i }) => {
+const StockOverview: React.FC<Props> = ({ stockInfo, i }) => {
   // nFormatter is a funcion used to take a large Number(num) and a digits variable. the
   // digits variable (0 or 1) decieds if you want a decimal piont or not
   function nFormatter(num: number, digits: number) {
@@ -53,13 +53,13 @@ const StockOverview: React.FC<Props> = ({ stock, i }) => {
   }
 
   // Deconstruct items for easy uses
-  let marketCap = stock.stockData.marketCap;
-  let marketOpen = stock.stockData.marketOpen;
-  let revenue = stock.stockData.revenue;
-  let toHighPrice = stock.userStockData.toHighPrice;
-  let highPrice = stock.userStockData.highPrice;
-  let lowPrice = stock.userStockData.lowPrice;
-  let toLowPrice = stock.userStockData.toLowPrice;
+  let marketCap = stockInfo.stockData.marketCap;
+  let marketOpen = stockInfo.stockData.marketOpen;
+  let revenue = stockInfo.stockData.revenue;
+  let toHighPrice = stockInfo.userStockData.toHighPrice;
+  let highPrice = stockInfo.userStockData.highPrice;
+  let lowPrice = stockInfo.userStockData.lowPrice;
+  let toLowPrice = stockInfo.userStockData.toLowPrice;
   let action = "";
 
   // change the large numbers form the stock data into understanable numbers, eg 126B
@@ -86,7 +86,10 @@ const StockOverview: React.FC<Props> = ({ stock, i }) => {
       {/* <ion-icon name="thumbs-up-sharp"></ion-icon> */}
       {/* <IonIcon icon={arrowUp} /> */}
 
-      <IonLabel class="ion-margin-start"> {stock.stockData.symbol} </IonLabel>
+      <IonLabel class="ion-margin-start">
+        {" "}
+        {stockInfo.stockData.symbol}{" "}
+      </IonLabel>
       <IonItem slot="end">${formattedMarketCap}</IonItem>
     </IonItem>
   );
