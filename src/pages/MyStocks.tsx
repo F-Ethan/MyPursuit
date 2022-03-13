@@ -48,20 +48,26 @@ const MyStocks: React.FC = (props: any) => {
     componentProps: dismiss,
   };
 
+  const initialStore = (data: any) => {
+    console.log("Dispatching stock data");
+    console.log(data);
+    props.dispatch(setStockData({ ...data }));
+    // data.forEach((item: any) => {
+    //   console.log("maping itmes to store");
+
+    //   props.dispatch(setStockData({ ...item }));
+    // });
+  };
+
   // when DOM is updated useEffect sends request to server to get stock data
   useEffect(() => {
     // setTimeout(() => props.dispatch(setLoader({ isLoading: true })), 2000);
 
     sendRequest().then(async (data: any) => {
       // setStockInfo(data);
-      console.log("Dispatching stock data");
-      console.log(data);
-      props.dispatch(setStockData({ ...data }));
-      // await data.forEach((item: any) => {
-      //   console.log("maping itmes to store");
 
-      //   props.dispatch(setStockData({...item}));
-      // }).then(props.dispatch(setLoader(false)))
+      await initialStore(data);
+      props.dispatch(setLoader({ isLoading: false }));
       // data.map((item: any, i: number) => {
       //   console.log("maping itmes to store")
       //   props.dispatch(setStockData(item));
@@ -117,24 +123,20 @@ const MyStocks: React.FC = (props: any) => {
           </IonItemDivider>
           <IonList>
             {/*-- Default Item --*/}
-            {
-              props.stockData.map((stock: any, i: number) => {
-                // console.log(arr);
-                // if (arr.length < 1) {
-                //   console.log(arr);
-                // } else {
-                //   arr.map((stock: any, i: number) => {
-                console.log("sending Stock to StockOverview");
-                console.log(stock);
-                return (
-                  <span key={i}>
-                    <StockOverview stockInfo={stock} i={i} />
-                  </span>
-                );
-              })
-              // }
-            }
-            )
+            {props.stockData[0].map((stock: any, i: number) => {
+              // console.log(arr);
+              // if (arr.length < 1) {
+              //   console.log(arr);
+              // } else {
+              //   arr.map((stock: any, i: number) => {
+              console.log("sending Stock to StockOverview");
+              console.log(stock);
+              return (
+                <span key={i}>
+                  <StockOverview stockInfo={stock} i={i} />
+                </span>
+              );
+            })}
           </IonList>
         </IonContent>
       )}

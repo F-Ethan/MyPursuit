@@ -2,7 +2,7 @@ import { createReducer } from "@reduxjs/toolkit";
 import { setLoader, setAlert, toggleNewStockForm } from "../actions/uiel";
 
 const loader = {
-  isLoading: false,
+  isLoading: true,
 };
 const NewStockForm = {
   isVisable: false,
