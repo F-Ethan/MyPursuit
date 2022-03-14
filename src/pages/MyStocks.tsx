@@ -23,6 +23,7 @@ import "./MyStocks.css";
 
 import { rawStockData } from "../interfaces/stockData";
 import store from "../data/store";
+import { POINT_CONVERSION_COMPRESSED } from "constants";
 
 interface stockInfo extends Array<rawStockData> {}
 
@@ -100,6 +101,8 @@ const MyStocks: React.FC = (props: any) => {
         </div>
       ) : (
         <IonContent>
+          {console.log("starting to load page component")}
+          {console.log(typeof props.stockData)}
           <IonHeader>
             <IonToolbar>
               <IonTitle slot="start">My Stocks</IonTitle>
@@ -123,7 +126,7 @@ const MyStocks: React.FC = (props: any) => {
           </IonItemDivider>
           <IonList>
             {/*-- Default Item --*/}
-            {props.stockData[0].map((stock: any, i: number) => {
+            {props.stockData.map((stock: any, i: number) => {
               // console.log(arr);
               // if (arr.length < 1) {
               //   console.log(arr);

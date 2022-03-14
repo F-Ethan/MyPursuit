@@ -25,12 +25,9 @@ const rawStockData = [
   },
 ];
 
-export const stockDataReducer = createReducer(
-  { rawStockData },
-  {
-    [setStockData.type]: (state, action) => ({
-      ...state,
-      rawStockData: [action.payload],
-    }),
-  }
-);
+export const stockDataReducer = createReducer([rawStockData], {
+  [setStockData.type]: (state, action) => ({
+    ...state,
+    rawStockData: action.payload,
+  }),
+});
