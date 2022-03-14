@@ -53,11 +53,6 @@ const MyStocks: React.FC = (props: any) => {
     console.log("Dispatching stock data");
     console.log(data);
     props.dispatch(setStockData({ ...data }));
-    // data.forEach((item: any) => {
-    //   console.log("maping itmes to store");
-
-    //   props.dispatch(setStockData({ ...item }));
-    // });
   };
 
   // when DOM is updated useEffect sends request to server to get stock data
@@ -126,7 +121,7 @@ const MyStocks: React.FC = (props: any) => {
           </IonItemDivider>
           <IonList>
             {/*-- Default Item --*/}
-            {props.stockData.map((stock: any, i: number) => {
+            {props.stockData[0].map((stock: any, i: number) => {
               // console.log(arr);
               // if (arr.length < 1) {
               //   console.log(arr);
@@ -151,5 +146,5 @@ const MyStocks: React.FC = (props: any) => {
 export default connect((props: any) => ({
   isLoading: props.uiel.loader.isLoading,
   isVisable: props.uiel.loader.isVisable,
-  stockData: props.stockData.rawStockData,
+  stockData: props.stockData,
 }))(MyStocks);
