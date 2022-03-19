@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 // import axios from "axios";
 import {
   IonContent,
@@ -18,13 +18,12 @@ import { toggleNewStockForm } from "../data/actions/uiel";
 
 import { rawStockData } from "../interfaces/stockData";
 
-interface Props {
-  dismiss: string;
-}
-
 interface stockInfo extends Array<rawStockData> {}
 
-const NewStock: React.FC<Props> = (props: any) => {
+const NewStock: React.FC<{
+  count: number;
+  onDismiss: () => void;
+}> = ({ count, onDismiss }) => {
   const [text, setText] = useState<string>();
   const [newStockInfo, setNewStockInfo] = useState<any>([]);
   const [stockSelect, setStockSelect] = useState<boolean>(false);
@@ -38,14 +37,20 @@ const NewStock: React.FC<Props> = (props: any) => {
   };
 
   // Yahoo finace API
+  // var options = {
+  //   method: "GET",
+  //   url: "https://yh-finance.p.rapidapi.com/stock/v2/get-summary",
+  //   params: { symbol: text, region: "US" },
+  //   headers: {
+  //     "x-rapidapi-host": "yh-finance.p.rapidapi.com",
+  //     "x-rapidapi-key": "63a51f3279msh18e8edbbf2f8ab4p136b71jsnb9c98ca45e18",
+  //   },
+  // };
+
   var options = {
     method: "GET",
-    url: "https://yh-finance.p.rapidapi.com/stock/v2/get-summary",
-    params: { symbol: text, region: "US" },
-    headers: {
-      "x-rapidapi-host": "yh-finance.p.rapidapi.com",
-      "x-rapidapi-key": "63a51f3279msh18e8edbbf2f8ab4p136b71jsnb9c98ca45e18",
-    },
+    url: "http://localhost:3000/newStock",
+    params: { symbol: text },
   };
 
   const sendRequest = () => {
@@ -58,13 +63,13 @@ const NewStock: React.FC<Props> = (props: any) => {
 
   var axios = require("axios").default;
 
+  console.log();
+
   if (!stockSelect) {
     return (
       <IonPage>
         <IonContent>
-          <IonButton
-            onClick={() => props.dispatch({ toggleNewStockForm: false })}
-          >
+          <IonButton color="danger" fill="outline" onClick={() => onDismiss()}>
             X
           </IonButton>
           <IonCard>
@@ -93,7 +98,8 @@ const NewStock: React.FC<Props> = (props: any) => {
     return (
       <IonPage>
         <IonContent>
-          <IonButton> X</IonButton>
+          helo
+          {/* <IonButton> X</IonButton>
           <IonCard>
             <IonCardHeader>
               <IonCardTitle>
@@ -101,19 +107,19 @@ const NewStock: React.FC<Props> = (props: any) => {
               </IonCardTitle>
             </IonCardHeader>
             <IonItem>
-              <IonLabel>Why so high</IonLabel>
+              <IonLabel>Upper Limit</IonLabel>
               <IonInput
                 value={newStockInfo.summaryDetail.fiftyTwoWeekHigh.raw}
               ></IonInput>
             </IonItem>
             <IonItem>
-              <IonLabel>Buy under $</IonLabel>
+              <IonLabel>Baisline </IonLabel>
               <IonInput
                 value={newStockInfo.summaryDetail.twoHundredDayAverage.raw}
               ></IonInput>
             </IonItem>
             <IonItem>
-              <IonLabel>Why so low</IonLabel>
+              <IonLabel>Lower Limit</IonLabel>
               <IonInput
                 value={newStockInfo.summaryDetail.fiftyTwoWeekLow.raw}
               ></IonInput>
@@ -125,7 +131,7 @@ const NewStock: React.FC<Props> = (props: any) => {
             >
               Submit
             </IonButton>
-          </IonCard>
+          </IonCard> */}
         </IonContent>
       </IonPage>
     );
@@ -135,4 +141,5 @@ const NewStock: React.FC<Props> = (props: any) => {
 // export default NewStock;
 export default connect((props: any) => ({
   isVisable: props.uiel.loader.isVisable,
+  stockData: props.stockData,
 }))(NewStock);

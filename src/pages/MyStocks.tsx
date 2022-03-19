@@ -34,19 +34,22 @@ const MyStocks: React.FC = (props: any) => {
   //   setStockInfo(props.getState().rawStockData);
   // });
 
+  const handelDismiss = () => {
+    dismiss();
+  };
+
   // opens and closes the NewStock Modal
   const [present, dismiss] = useIonModal(NewStock, {
-    dismiss: () => props.dispatch({ toggleNewStockForm: false }),
+    onDismiss: handelDismiss,
+    componentProps: handelDismiss,
   });
 
   //New Stock Modal options
   const modalOptions = {
-    onDidDismiss: () => dismiss(),
     breakpoints: [0, 0.2, 0.5, 1],
-    initialBreakpoint: 0.5,
+    initialBreakpoint: 1,
     backdropBreakpoint: 0.2,
     swipeToClose: true,
-    componentProps: dismiss,
   };
 
   const initialStore = (data: any) => {
