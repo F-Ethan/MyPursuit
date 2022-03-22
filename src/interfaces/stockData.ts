@@ -8,6 +8,9 @@ export interface rawStockData {
     marketCap: number;
     revenue: number;
     dividendsPerShare: number;
+    fiftyTwoWeekHigh: number;
+    fiftyTwoWeekLow: number;
+    twoHundredDayAverage: number;
   };
   userStockData: {
     symbol: string;

@@ -30,6 +30,8 @@ interface stockInfo extends Array<rawStockData> {}
 const MyStocks: React.FC = (props: any) => {
   // variables to set and store rawStockData object returned from the server
   const [stockInfo, setStockInfo] = useState<any>([]);
+  const [newStockInfo, setNewStockInfo] = useState<any>([]);
+
   // store.subscribe(() => {
   //   setStockInfo(props.getState().rawStockData);
   // });

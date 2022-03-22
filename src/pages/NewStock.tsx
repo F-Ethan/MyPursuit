@@ -10,42 +10,74 @@ import {
   IonInput,
   IonButton,
   IonLabel,
+  IonIcon,
 } from "@ionic/react";
+import { helpCircleOutline } from "ionicons/icons";
 import "./NewStock.css";
 
 import { connect } from "react-redux";
 import { toggleNewStockForm } from "../data/actions/uiel";
 
-import { rawStockData } from "../interfaces/stockData";
-
-interface stockInfo extends Array<rawStockData> {}
+export interface newStockInfo {
+  symbol: string;
+  marketOpen: number;
+  marketClose: number;
+  sharesShort: number;
+  totalCash: number;
+  marketCap: number;
+  revenue: number;
+  dividendsPerShare: number;
+  fiftyTwoWeekHigh: number;
+  fiftyTwoWeekLow: number;
+  twoHundredDayAverage: number;
+}
 
 const NewStock: React.FC<{
   count: number;
   onDismiss: () => void;
 }> = ({ count, onDismiss }) => {
   const [text, setText] = useState<string>();
+  const [upperLimit, setUpperLimit] = useState<any>();
+  const [baisline, setBaisline] = useState<any>();
+  const [lowerLimit, setLowerLimit] = useState<any>();
   const [newStockInfo, setNewStockInfo] = useState<any>([]);
   const [stockSelect, setStockSelect] = useState<boolean>(false);
 
   const fetchNewStock = () => {
     console.log("sending the axios request");
     sendRequest().then((data: any) => {
+      //---- this block runs after recieving a response from the back end  ----
+      //set the response Object to newStockInfo
       setNewStockInfo(data);
+      //Change stockSelect to true
       setStockSelect(true);
+      //set the needed data to thier respective useState hooks for the form
+      setUpperLimit(data.fiftyTwoWeekHigh);
+      setLowerLimit(data.fiftyTwoWeekLow);
+      setBaisline(data.twoHundredDayAverage);
     });
   };
 
-  // Yahoo finace API
-  // var options = {
-  //   method: "GET",
-  //   url: "https://yh-finance.p.rapidapi.com/stock/v2/get-summary",
-  //   params: { symbol: text, region: "US" },
-  //   headers: {
-  //     "x-rapidapi-host": "yh-finance.p.rapidapi.com",
-  //     "x-rapidapi-key": "63a51f3279msh18e8edbbf2f8ab4p136b71jsnb9c98ca45e18",
-  //   },
-  // };
+  var addUserStockInfoOptions = {
+    method: "POST",
+    url: "http://localhost:3000/user/newStock",
+    params: {
+      username: "Fethanerrier",
+      stockInfo: {
+        upperLimit,
+        baisline,
+        lowerLimit,
+      },
+    },
+  };
+
+  const sendStockInfo = () => {
+    console.log("Pushing stock Info data to backend");
+    return axios.request(addUserStockInfoOptions).then((response: any) => {
+      console.log(response.data);
+      return response.data;
+    });
+  };
 
   var options = {
     method: "GET",
@@ -98,40 +130,48 @@ const NewStock: React.FC<{
     return (
       <IonPage>
         <IonContent>
-          helo
-          {/* <IonButton> X</IonButton>
+          <IonButton color="danger" fill="outline" onClick={() => onDismiss()}>
+            X
+          </IonButton>
           <IonCard>
             <IonCardHeader>
-              <IonCardTitle>
-                {newStockInfo.price.shortName}({newStockInfo.symbol})
-              </IonCardTitle>
+              <IonCardTitle>{newStockInfo.symbol}</IonCardTitle>
             </IonCardHeader>
             <IonItem>
               <IonLabel>Upper Limit</IonLabel>
               <IonInput
-                value={newStockInfo.summaryDetail.fiftyTwoWeekHigh.raw}
+                type="number"
+                onIonChange={(e) => setUpperLimit(e.detail.value!)}
+                value={upperLimit}
               ></IonInput>
+              <IonIcon icon={helpCircleOutline} />
             </IonItem>
             <IonItem>
               <IonLabel>Baisline </IonLabel>
               <IonInput
-                value={newStockInfo.summaryDetail.twoHundredDayAverage.raw}
+                type="number"
+                onIonChange={(e) => setBaisline(e.detail.value!)}
+                value={baisline}
               ></IonInput>
+              <IonIcon icon={helpCircleOutline} />
             </IonItem>
             <IonItem>
               <IonLabel>Lower Limit</IonLabel>
               <IonInput
-                value={newStockInfo.summaryDetail.fiftyTwoWeekLow.raw}
+                type="number"
+                onIonChange={(e) => setLowerLimit(e.detail.value!)}
+                value={lowerLimit}
               ></IonInput>
+              <IonIcon icon={helpCircleOutline} />
             </IonItem>
             <IonButton
               color="success"
               fill="outline"
-              onClick={() => fetchNewStock()}
+              onClick={() => sendStockInfo()}
             >
               Submit
             </IonButton>
-          </IonCard> */}
+          </IonCard>
         </IonContent>
       </IonPage>
     );
